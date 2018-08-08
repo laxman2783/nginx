@@ -1,0 +1,28 @@
+1) Download ngInx  for windows
+2) start angular5 application (http://localhost:4200)
+3) Modify nginx.conf file
+server {
+        listen       8081;
+        server_name  localhost;
+        index index.htm index.html;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;/
+
+        location /{
+           # root   html;
+            #index  index.html index.htm;
+                  proxy_pass http://127.0.0.1:4200/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+
+4) start  nginx from command prompt
+
+5) from the browser hit http://localhost:8081
+
+6) It will redirect to  angular application (http://localhost:8081) instead of http://localhost:4200)
