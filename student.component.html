@@ -1,0 +1,34 @@
+<h3 class="page-header">Add Invoice</h3>
+    <button type="button" (click)="addNewRow()" class="btn btn-primary">Add new Row</button><br>
+    <form [formGroup]="invoiceForm">
+      <div formArrayName="itemRows">
+      
+<!--
+In the template we are iterating this formarray, 
+    and that is just the path to the formarray, which is:
+    
+    invoiceForm.controls.itemRows.controls
+    
+    'invoiceForm' being the complete form object, 'controls' being the content of the form object,
+    'itemRows' being the (form)array in the form, 'controls' being the content of the formarray.
+
+-->
+      
+        <div *ngFor="let itemrow of invoiceForm.controls.itemRows.controls; let i=index"  [formGroupName]="i">
+          <h4>Invoice Row #{{ i + 1 }}</h4>
+          <div class="form-group">
+            <label>Item Name</label>
+            <input formControlName="itemname"   class="form-control">
+			<select formControlName="fieldType"  [attr.requried]= "isChecked" class="form-control">
+					<option value="textbox">Textbox</option>
+					<option value="radio">Radio</option>
+					<option value="checkbox">checkbox</option>
+				</select>
+			<input type="checkbox" [(ngModel)]="isChecked" formControlName="isChecked"  /> Required {{isChecked}}
+          </div>
+          <button *ngIf="invoiceForm.controls.itemRows.controls.length > 1"  (click)="deleteRow(i)" class="btn btn-danger">Delete Button</button>
+        </div>
+      </div>
+	  <button type="button" (click)="submitForm(invoiceForm)" class="btn btn-success">Submit</button>
+    </form>
+    <pre>{{invoiceForm.value | json}}</pre>
